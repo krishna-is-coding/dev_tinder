@@ -1,74 +1,32 @@
 const express = require("express");
-
+const connectDB = require("./config/database");
 const app = express();
 
-app.get("/admin/getUserDate", (req, res) => {
-    try {
-        throw new Error("sgehhg");
-        res.send("User Data ");
-    } catch (err) {
-        res.status(500).send("Some error contact support team");
-    }
+const User = require("./models/user");
+
+app.post("/signup", async (req, res) => {
+  const user = new User({
+    firstName: "gopi",
+    lastName: "Sharma",
+    emailId: "gopi.com",
+    password: "gopi@123",
+  });
+  try {
+    await user.save();
+    res.send("User Added Succesfully......");
+  } catch (err) {
+    res.status(400).send("Error saving the user + err.message");
+  }
 });
-app.use("/", (err, req, res, next) => {
-    if (err) {
-        res.status(500).send("Something went wrong");
-    }
-});
-// app.get("/admin/getAllData", (req, res) => {
-//     //logic of  checking if the request authorized
-//     const token = "gsdgfjsejsghghdg";
-//     const isAdminAuthorized = token === "xyz";
-//     if (isAdminAuthorized) {
-//         res.send("All the Data Sent");
-//     } else {
-//         res.status(401).send("authorized request");
-//     }
 
-//     res.send("Api Data Sent");
-// });
-
-// app.get("/admin/delete", (req, res) => {
-//     //logic of  checking if the request authorized
-//     const token = "gsdgfjsejsghghdg";
-//     const isAdminAuthorized = token === "xyz";
-//     if (isAdminAuthorized) {
-//         res.send("Delete the auth");
-//     } else {
-//         res.status(401).send("authorized request");
-//     }
-
-//     res.send("Api Data Sent");
-// });
-
-// app.get("/user/:userId/:name/:password", (req, res) => {
-//     console.log(req.params);
-//     res.send({ name: "Krishna", lastname: "sharma" });
-// });
-// app.use("/", (req, res) => {
-//     res.send("hlo....................don ...................");
-// });
-
-// app.get("/test", [
-//     (req, res, next) => {
-//         console.log("first route here...........");
-//         next(); // Pass the request to the next route handler
-//     },
-
-//     (req, res, next) => {
-//         console.log("second response");
-//         next(); // Pass the request to the next route handler
-//     },
-//     (req, res, next) => {
-//         console.log("Handling the route the user");
-//         next();
-//     },
-// ]);
-
-// app.use("/test", (req, res) => {
-//     res.send("hi.............server.......");
-// });
-
-app.listen(3000, () => {
-    console.log("server is running on the port 3000");
-});
+// Connect to the database and start the server
+connectDB()
+  .then(() => {
+    console.log("Database connection established");
+    app.listen(3000, () => {
+      console.log("Server is running on port 3000");
+    });
+  })
+  .catch((err) => {
+    console.log("Database cannot be connected", err);
+  });
