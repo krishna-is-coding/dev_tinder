@@ -2,10 +2,6 @@ const express = require("express");
 const connectDB = require("./config/database");
 const app = express();
 
-const app1 = express();
-
-const app2 = express();
-
 const User = require("./models/user");
 
 app.use(express.json());
@@ -38,6 +34,12 @@ app.post("/user", async(req, res) => {
 });
 app.delete("/user", async(req, res) => {
     const userId = req.body.userId;
+
+    const userId1 = req.body.userId;
+
+    const userId2 = req.body.userId;
+
+    const userId3 = req.body.userId;
 
     try {
         const user = await User.findOneAndDelete({ _id: userId }, // Condition to match the document
